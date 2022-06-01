@@ -6,21 +6,13 @@ const utils = require('./utils')
 const glob = require('glob')
 const fs = require('fs')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
 const NODE_ENV = utils.getNodeEnv()
 
-const vendors = [
-  'vue/dist/vue.esm.js',
-  'vue-router',
-  'vuex',
-  'axios',
-  'moment',
-  'raven-js',
-  'browser-detect'
-];
+const vendors = ['vue/dist/vue.esm.js', 'vue-router', 'vuex', 'axios', 'moment', 'raven-js', 'browser-detect'];
 
 // clear old dll
 const globOptions = {cwd: resolve('static/js'), absolute: true};
@@ -29,6 +21,11 @@ console.log("cleaning old dll..")
 oldDlls.forEach(f => {
   fs.unlink(f)
 })
+
+// ERR_INVALID_CALLBACK
+// oldDLLs return undefined
+// TODO: fix it
+
 console.log("building ..")
 
 module.exports = {
