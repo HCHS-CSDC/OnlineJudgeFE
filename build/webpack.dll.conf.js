@@ -18,13 +18,17 @@ const vendors = ['vue/dist/vue.esm.js', 'vue-router', 'vuex', 'axios', 'moment',
 const globOptions = {cwd: resolve('static/js'), absolute: true};
 let oldDlls = glob.sync('vendor.dll.*.js', globOptions);
 console.log("cleaning old dll..")
+oldDlls.toString().split(',').forEach(file => {
+  fs.unlinkSync(file)
+})
+/*
 oldDlls.forEach(f => {
   fs.unlink(f)
 })
-
+*/
 // ERR_INVALID_CALLBACK
 // oldDLLs return undefined
-// TODO: fix it
+// Fixed on above function, but couldn't understand why
 
 console.log("building ..")
 
