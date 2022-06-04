@@ -46,7 +46,7 @@ module.exports = {
       'process.env': NODE_ENV === 'production' ? config.build.env : config.dev.env
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-tw/),
     new UglifyJSPlugin({
       exclude: /\.min\.js$/,
       cache: true,
