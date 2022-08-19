@@ -23,6 +23,11 @@ jobs:
           files: dist
           dest: dist.zip
 
+      - name : Add git tag
+        run: |
+          git tag -a v${{ env.GITHUB_SHA }} -m "Release v${{ env.GITHUB_SHA }}"
+          git push origin v${{ env.GITHUB_SHA }}
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
