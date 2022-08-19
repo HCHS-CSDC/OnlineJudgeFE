@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
 
 jobs:
-    build:
-      runs-on: ubuntu-latest
-      steps:
+  build:
+    runs-on: ubuntu-latest
+    steps:
 
       - uses: actions/checkout@v3
 
@@ -18,10 +18,10 @@ jobs:
           npm run build
 
       - name: Compress assets to zip from folder
-        uses: actions/zip-artifact@v2
+      - uses: vimtor/action-zip@v1
         with:
-          name: 'dist.zip'
-          path: './dist'
+          files: dist
+          dest: dist.zip
 
       - name: Release
         uses: softprops/action-gh-release@v1
