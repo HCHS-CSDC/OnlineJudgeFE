@@ -53,7 +53,17 @@ jobs:
           search_artifacts: false
           # Optional, choose to skip unpacking the downloaded artifact(s)
           # default false
-          skip_unpack: false
+          skip_unpack: true
+
+      - name: Unzip
+        run: |
+          cd ./dist
+          mkdir dist
+          mv dist.zip ./dist/dist.zip
+          cd dist
+          unzip dist.zip
+          rm dist.zip
+          cd ../../
 
       - name: Compress assets to zip from folder
         uses: vimtor/action-zip@v1
