@@ -51,12 +51,6 @@ jobs:
           # default false
           skip_unpack: true
 
-      - name: Compress assets to zip from folder
-        uses: vimtor/action-zip@v1
-        with:
-          files: dist
-          dest: dist.zip
-
       - name: Setup Date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
@@ -68,6 +62,5 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          # tag = short sha + date
           tag_name: ${{ steps.vars.outputs.sha_short }}-${{ steps.date.outputs.date }}
           files: 'dist.zip'
