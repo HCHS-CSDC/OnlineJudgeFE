@@ -57,9 +57,12 @@ jobs:
           files: dist
           dest: dist.zip
 
+      - name: Setup Short Git
+        run: export SHORT_GIT=$(git rev-parse --short HEAD)
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           # tag = short sha + date
-          tag: $(git rev-parse --short HEAD)-${{ github.event.created_at | date('%Y-%m-%d') }}
+          tag: ${{ env.SHORT_GIT }}-${{ github.event.created_at | date('%Y-%m-%d') }}
           files: 'dist.zip'
