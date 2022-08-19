@@ -35,7 +35,7 @@ jobs:
           # will download all artifacts if not specified
           # and extract them into respective subdirectories
           # https://github.com/actions/download-artifact#download-all-artifacts
-          name: dist.zip
+          name: dist
           # Optional, a directory where to extract artifact(s), defaults to the current directory
           path: /
           # Optional, defaults to current repo
