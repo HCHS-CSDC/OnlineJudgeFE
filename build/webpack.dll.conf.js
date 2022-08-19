@@ -15,12 +15,16 @@ const NODE_ENV = utils.getNodeEnv()
 const vendors = ['vue/dist/vue.esm.js', 'vue-router', 'vuex', 'axios', 'moment', 'raven-js', 'browser-detect'];
 
 // clear old dll
-const globOptions = {cwd: resolve('static/js'), absolute: true};
-let oldDlls = glob.sync('vendor.dll.*.js', globOptions);
-console.log("cleaning old dll..")
-oldDlls.toString().split(',').forEach(file => {
-  fs.unlinkSync(file)
-})
+// if static/js/ exists, delete it
+const staticDir = resolve('static/js')
+if (fs.existsSync(staticDir)) {
+  const globOptions = {cwd: resolve('static/js'), absolute: true};
+  let oldDlls = glob.sync('vendor.dll.*.js', globOptions);
+  console.log("cleaning old dll..")
+  oldDlls.toString().split(',').forEach(file => {
+    fs.unlinkSync(file)
+  })
+}
 /*
 oldDlls.forEach(f => {
   fs.unlink(f)
