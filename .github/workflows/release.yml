@@ -58,6 +58,7 @@ jobs:
           dest: dist.zip
 
       - name: Setup Short Git
+        id: vars
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: Release
