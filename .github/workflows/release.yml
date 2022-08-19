@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: fregante/setup-git-user@v1
+      # - uses: fregante/setup-git-user@v1
 
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
@@ -57,13 +57,9 @@ jobs:
           files: dist
           dest: dist.zip
 
-      - name: Add git tag
-        run: |
-          git tag -a "${{ github.sha }}" -m "Release ver. ${{ github.sha }}"
-          git push origin ${{ github.sha }}
-
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: '${{ github.sha }}'
+          # tag = short sha + date
+          tag: $(git rev-parse --short HEAD)-${{ github.event.created_at | date('%Y-%m-%d') }}
           files: 'dist.zip'
