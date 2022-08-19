@@ -26,7 +26,6 @@ jobs:
       - name: Install & Build
         run: |
           npm install
-          npm audit fix
           export NODE_ENV=production
           npm run build:dll
           npm run build
