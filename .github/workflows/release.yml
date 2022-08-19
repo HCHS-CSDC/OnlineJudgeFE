@@ -64,5 +64,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           # tag = short sha + date
-          tag: ${{ env.SHORT_GIT }}-${{ github.event.created_at | date('%Y-%m-%d') }}
+          tag: ${{ env.SHORT_GIT }}-${{ steps.date.outputs.date }}
           files: 'dist.zip'
