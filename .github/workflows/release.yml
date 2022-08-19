@@ -5,23 +5,82 @@ on:
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
-      - name: Install & Build
+      # - uses: fregante/setup-git-user@v1
+
+      - name: Create dist floder
         run: |
-          npm install
-          export NODE_ENV=production
-          npm run build:dll
-          npm run build
+          mkdir dist
+
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          # Optional, GitHub token, a Personal Access Token with `public_repo` scope if needed
+          # Required, if the artifact is from a different repo
+          # Required, if the repo is private a Personal Access Token with `repo` scope is needed
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          # Optional, workflow file name or ID
+          # If not specified, will be inferred from run_id (if run_id is specified), or will be the current workflow
+          workflow: upload-build.yml
+          # Optional, the status or conclusion of a completed workflow to search for
+          # Can be one of a workflow conclusion:
+          #   "failure", "success", "neutral", "cancelled", "skipped", "timed_out", "action_required"
+          # Or a workflow status:
+          #   "completed", "in_progress", "queued"
+          # Use the empty string ("") to ignore status or conclusion in the search
+          workflow_conclusion: success
+          # Optional, will get head commit SHA
+          branch: master
+          # Optional, uploaded artifact name,
+          # will download all artifacts if not specified
+          # and extract them into respective subdirectories
+          # https://github.com/actions/download-artifact#download-all-artifacts
+          name: dist
+          # Optional, a directory where to extract artifact(s), defaults to the current directory
+          path: ./dist
+          # Optional, defaults to current repo
+          repo: ${{github.repository}}
+          # Optional, check the workflow run to whether it has an artifact
+          # then will get the last available artifact from the previous workflow
+          # default false, just try to download from the last one
+          check_artifacts: false
+          # Optional, search for the last workflow run whose stored an artifact named as in `name` input
+          # default false
+          search_artifacts: false
+          # Optional, choose to skip unpacking the downloaded artifact(s)
+          # default false
+          skip_unpack: true
+
+      - name: Unzip
+        run: |
+          cd ./dist
+          mkdir dist
+          mv dist.zip ./dist/dist.zip
+          cd dist
+          unzip dist.zip
+          rm dist.zip
+          cd ../../
 
       - name: Compress assets to zip from folder
-      - uses: vimtor/action-zip@v1
+        uses: vimtor/action-zip@v1
         with:
           files: dist
           dest: dist.zip
 
+      - name: Setup Date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Setup Short Git
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          file: 'dist.zip'
+          tag_name: ${{ steps.vars.outputs.sha_short }}-${{ steps.date.outputs.date }}
+          files: 'dist.zip'
