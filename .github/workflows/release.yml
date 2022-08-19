@@ -57,7 +57,7 @@ jobs:
           dest: dist.zip
 
       - name: Add git tag
-      - uses: fregante/setup-git-user@v1
+        uses: fregante/setup-git-user@v1
         run: |
           git tag -a "${{ github.sha }}" -m "Release ver. ${{ github.sha }}"
           git push origin ${{ github.sha }}
