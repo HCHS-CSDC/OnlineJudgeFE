@@ -57,6 +57,10 @@ jobs:
           files: dist
           dest: dist.zip
 
+      - name: Setup Date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
       - name: Setup Short Git
         id: vars
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
